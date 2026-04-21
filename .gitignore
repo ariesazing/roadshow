@@ -1,0 +1,21 @@
+.DS_Store
+Thumbs.db
+
+# Preserve the old frontend repository metadata without tracking it.
+react-frontend/.git.backup/
+
+# Frontend artifacts
+react-frontend/node_modules/
+react-frontend/build/
+
+# Laravel artifacts
+app/vendor/
+app/node_modules/
+app/.env
+app/.env.backup
+app/.env.production
+app/public/build/
+app/public/hot
+app/public/storage/
+app/storage/*.key
+app/storage/pail/
