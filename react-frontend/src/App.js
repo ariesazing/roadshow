@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './components/Login';
+import Profiles from './components/Profiles';
 import { isAuthenticated, logout } from './services/authService';
 
 function App() {
@@ -34,11 +35,10 @@ function App() {
   }
 
   // Main app content after authentication
-  return (
-    <div className="container-fluid">
-      <nav className="navbar navbar-dark bg-dark mb-4">
+  return (d-flex">
+      <nav className="navbar navbar-dark bg-dark w-100 mb-4">
         <div className="container-fluid">
-          <span className="navbar-brand mb-0 h1">Dashboard</span>
+          <span className="navbar-brand mb-0 h1">POS System</span>
           <button
             className="btn btn-outline-light"
             onClick={handleLogout}
@@ -47,8 +47,8 @@ function App() {
           </button>
         </div>
       </nav>
-      <div className="container">
-        <h1>Welcome to the Dashboard</h1>
+      <div style={{ width: '100%' }}>
+        <Profiles /</h1>
         <p>You are now logged in.</p>
       </div>
     </div>
