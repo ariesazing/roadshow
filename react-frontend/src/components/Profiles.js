@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { fetchAllProfiles } from '../services/profileService';
 import AddProfile from './AddProfile';
+import EditProfile from './EditProfile';
 
 const Profiles = () => {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
 
   useEffect(() => {
     loadProfiles();
@@ -26,7 +29,18 @@ const Profiles = () => {
     
 
   const handleAddProfileSuccess = () => {
-    setShowAddModal(false);
+    
+
+  const handleOpenEditModal = (profile) => {
+    setSelectedProfile(profile);
+    setShowEditModal(true);
+  };
+
+  const handleEditProfileSuccess = () => {
+    setShowEditModal(false);
+    setSelectedProfile(null);
+    loadProfiles(); // Refresh the list
+  };setShowAddModal(false);
     loadProfiles(); // Refresh the list
   };}
   };
@@ -46,7 +60,18 @@ const Profiles = () => {
       <div classN
             className="btn btn-primary"
             onClick={() => setShowAddModal(true)}
-          >
+        
+
+      {showEditModal && selectedProfile && (
+        <EditProfile
+          profile={selectedProfile}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedProfile(null);
+          }}
+          onSuccess={handleEditProfileSuccess}
+        />
+      )}  >
             + Add New Profile
           </button>
         </div>
@@ -87,7 +112,10 @@ const Profiles = () => {
               <tr>
                 <th>ID</th>
                 <th>First Name</th>
-                <th>Last Name</th>
+                <th>Last Na
+                      className="btn btn-sm btn-warning me-2"
+                      onClick={() => handleOpenEditModal(profile)}
+                    
                 <th>Middle Initial</th>
                 <th>Email</th>
                 <th>Phone Number</th>
