@@ -35,7 +35,8 @@ function App() {
   }
 
   // Main app content after authentication
-  return (d-flex">
+  return (
+    <div className="d-flex">
       <nav className="navbar navbar-dark bg-dark w-100 mb-4">
         <div className="container-fluid">
           <span className="navbar-brand mb-0 h1">POS System</span>
@@ -48,8 +49,7 @@ function App() {
         </div>
       </nav>
       <div style={{ width: '100%' }}>
-        <Profiles /</h1>
-        <p>You are now logged in.</p>
+        <Profiles />
       </div>
     </div>
   );
