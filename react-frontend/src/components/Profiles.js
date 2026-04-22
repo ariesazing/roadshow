@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchAllProfiles } from '../services/profileService';
 import AddProfile from './AddProfile';
 import EditProfile from './EditProfile';
+import DeleteConfirmation from './DeleteConfirmation';
 
 const Profiles = () => {
   const [profiles, setProfiles] = useState([]);
@@ -9,7 +10,9 @@ const Profiles = () => {
   const [error, setError] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [selectedProfileForDelete, setSelectedProfileForDelete] = useState(null);
 
   useEffect(() => {
     loadProfiles();
@@ -26,10 +29,13 @@ const Profiles = () => {
       console.error('Error:', err);
     } finally {
       setLoading(false);
-    
+    }
+  };
 
   const handleAddProfileSuccess = () => {
-    
+    setShowAddModal(false);
+    loadProfiles();
+  };
 
   const handleOpenEditModal = (profile) => {
     setSelectedProfile(profile);
@@ -39,10 +45,18 @@ const Profiles = () => {
   const handleEditProfileSuccess = () => {
     setShowEditModal(false);
     setSelectedProfile(null);
-    loadProfiles(); // Refresh the list
-  };setShowAddModal(false);
-    loadProfiles(); // Refresh the list
-  };}
+    loadProfiles();
+  };
+
+  const handleOpenDeleteModal = (profile) => {
+    setSelectedProfileForDelete(profile);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteProfileSuccess = () => {
+    setShowDeleteModal(false);
+    setSelectedProfileForDelete(null);
+    loadProfiles();
   };
 
   if (loading) {
@@ -57,21 +71,15 @@ const Profiles = () => {
 
   return (
     <div className="container-fluid py-4">
-      <div classN
+      <div className="row mb-4">
+        <div className="col-md-6">
+          <h2>Profiles</h2>
+        </div>
+        <div className="col-md-6 text-end">
+          <button
             className="btn btn-primary"
             onClick={() => setShowAddModal(true)}
-        
-
-      {showEditModal && selectedProfile && (
-        <EditProfile
-          profile={selectedProfile}
-          onClose={() => {
-            setShowEditModal(false);
-            setSelectedProfile(null);
-          }}
-          onSuccess={handleEditProfileSuccess}
-        />
-      )}  >
+          >
             + Add New Profile
           </button>
         </div>
@@ -82,12 +90,29 @@ const Profiles = () => {
           onClose={() => setShowAddModal(false)}
           onSuccess={handleAddProfileSuccess}
         />
-      )} className="col-md-6 text-end">
-          <button className="btn btn-primary">
-            + Add New Profile
-          </button>
-        </div>
-      </div>
+      )}
+
+      {showEditModal && selectedProfile && (
+        <EditProfile
+          profile={selectedProfile}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedProfile(null);
+          }}
+          onSuccess={handleEditProfileSuccess}
+        />
+      )}
+
+      {showDeleteModal && selectedProfileForDelete && (
+        <DeleteConfirmation
+          profile={selectedProfileForDelete}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedProfileForDelete(null);
+          }}
+          onSuccess={handleDeleteProfileSuccess}
+        />
+      )}
 
       {error && (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
@@ -112,10 +137,7 @@ const Profiles = () => {
               <tr>
                 <th>ID</th>
                 <th>First Name</th>
-                <th>Last Na
-                      className="btn btn-sm btn-warning me-2"
-                      onClick={() => handleOpenEditModal(profile)}
-                    
+                <th>Last Name</th>
                 <th>Middle Initial</th>
                 <th>Email</th>
                 <th>Phone Number</th>
@@ -137,10 +159,16 @@ const Profiles = () => {
                     <button className="btn btn-sm btn-info me-2">
                       View
                     </button>
-                    <button className="btn btn-sm btn-warning me-2">
+                    <button
+                      className="btn btn-sm btn-warning me-2"
+                      onClick={() => handleOpenEditModal(profile)}
+                    >
                       Edit
                     </button>
-                    <button className="btn btn-sm btn-danger">
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleOpenDeleteModal(profile)}
+                    >
                       Delete
                     </button>
                   </td>
