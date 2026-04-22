@@ -36,7 +36,7 @@ function App() {
 
   // Main app content after authentication
   return (
-    <div className="d-flex">
+    <div className="d-flex flex-column">
       <nav className="navbar navbar-dark bg-dark w-100 mb-4">
         <div className="container-fluid">
           <span className="navbar-brand mb-0 h1">POS System</span>
