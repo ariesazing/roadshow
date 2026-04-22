@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { fetchAllProfiles } from '../services/profileService';
+import AddProfile from './AddProfile';
 
 const Profiles = () => {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     loadProfiles();
@@ -21,7 +23,12 @@ const Profiles = () => {
       console.error('Error:', err);
     } finally {
       setLoading(false);
-    }
+    
+
+  const handleAddProfileSuccess = () => {
+    setShowAddModal(false);
+    loadProfiles(); // Refresh the list
+  };}
   };
 
   if (loading) {
@@ -36,11 +43,21 @@ const Profiles = () => {
 
   return (
     <div className="container-fluid py-4">
-      <div className="row mb-4">
-        <div className="col-md-6">
-          <h2>Profiles</h2>
+      <div classN
+            className="btn btn-primary"
+            onClick={() => setShowAddModal(true)}
+          >
+            + Add New Profile
+          </button>
         </div>
-        <div className="col-md-6 text-end">
+      </div>
+
+      {showAddModal && (
+        <AddProfile
+          onClose={() => setShowAddModal(false)}
+          onSuccess={handleAddProfileSuccess}
+        />
+      )} className="col-md-6 text-end">
           <button className="btn btn-primary">
             + Add New Profile
           </button>
