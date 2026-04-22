@@ -31,8 +31,27 @@ export const login = async (email, password) => {
   }
 };
 
-export const logout = () => {
-  localStorage.removeItem('authToken');
+export const logout = async () => {
+  try {
+    const response = await authenticatedFetch(`${API_URL}/logout`, {
+      method: 'POST',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Logout failed');
+    }
+
+    // Clear token from localStorage on successful logout
+    localStorage.removeItem('authToken');
+    
+    return data;
+  } catch (error) {
+    // Clear token even if logout request fails
+    localStorage.removeItem('authToken');
+    throw error;
+  }
 };
 
 export const getToken = () => {

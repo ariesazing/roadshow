@@ -17,9 +17,16 @@ function App() {
     // You can redirect to dashboard or show main content here
   };
 
-  const handleLogout = () => {
-    logout();
-    setAuthenticated(false);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setAuthenticated(false);
+      console.log('User logged out successfully');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still redirect to login even if API call fails
+      setAuthenticated(false);
+    }
   };
 
   if (!authenticated) {
