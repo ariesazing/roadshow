@@ -42,3 +42,25 @@ export const getToken = () => {
 export const isAuthenticated = () => {
   return !!localStorage.getItem('authToken');
 };
+
+export const getAuthHeaders = () => {
+  const token = getToken();
+  return {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` }),
+  };
+};
+
+// Helper function for authenticated API requests
+export const authenticatedFetch = async (url, options = {}) => {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...getAuthHeaders(),
+      ...options.headers,
+    },
+  });
+
+  return response;
+};
